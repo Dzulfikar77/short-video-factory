@@ -15,7 +15,7 @@ import {
 import { EdgeTtsSynthesizeCommonParams } from './tts/types'
 import { RenderVideoParams } from './ffmpeg/types'
 
-// --------- 向界面渲染进程暴露某些API ---------
+// --------- Expose certain APIs to the renderer process ---------
 
 contextBridge.exposeInMainWorld('ipcRenderer', {
   on(...args: Parameters<typeof ipcRenderer.on>) {

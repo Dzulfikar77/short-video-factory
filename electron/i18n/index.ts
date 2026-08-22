@@ -15,19 +15,19 @@ export const initI18n = async () => {
     // initAsync: false,
     // debug: true,
     ...i18nCommonOptions,
-    lng: app.getLocale(), // 获取系统语言
+    lng: app.getLocale(), // Get system language
     backend: {
       loadPath: localesPath,
     },
   })
 
-  // 获取多语言文件路径
+  // Get locales folder path
   ipcMain.handle('i18n-getLocalesPath', () => localesPath)
 
-  // 读取当前语言
+  // Get current language
   ipcMain.handle('i18n-getLanguage', () => i18next.language)
 
-  // 渲染进程切换语言
+  // Renderer process change language
   ipcMain.handle('i18n-changeLanguage', async (_, lng: string) => {
     await changeAppLanguage(lng)
     return lng

@@ -3,7 +3,7 @@
 declare namespace NodeJS {
   interface ProcessEnv {
     /**
-     * 已构建的目录结构
+     * Built directory structure
      *
      * ```tree
      * ├─┬─┬ dist
@@ -21,7 +21,7 @@ declare namespace NodeJS {
   }
 }
 
-// 在渲染器进程中使用，在 `preload.ts` 中暴露方法
+// Used in renderer process, methods exposed in `preload.ts`
 interface Window {
   ipcRenderer: Pick<import('electron').IpcRenderer, 'on' | 'once' | 'off' | 'send' | 'invoke'>
   i18n: {

@@ -77,20 +77,20 @@ defineProps<{
   disabled?: boolean
 }>()
 
-// 选择文件夹
+// Select folder
 const handleSelectFolder = async () => {
   const folderPath = await window.electron.selectFolder({
     title: t('dialogs.selectAssetsFolder'),
     defaultPath: appStore.videoAssetsFolder,
   })
-  console.log('用户选择分镜素材文件夹，绝对路径：', folderPath)
+  console.log('User selected storyboard assets folder, absolute path:', folderPath)
   if (folderPath) {
     appStore.videoAssetsFolder = folderPath
     refreshAssets()
   }
 }
 
-// 刷新素材库
+// Refresh asset library
 const videoAssets = ref<ListFilesFromFolderRecord[]>([])
 const videoDurationCache = ref(new Map<string, number>())
 const refreshAssetsLoading = ref(false)
@@ -103,7 +103,7 @@ const refreshAssets = async () => {
     const assets = await window.electron.listFilesFromFolder({
       folderPath: appStore.videoAssetsFolder,
     })
-    console.log(`素材库刷新:`, assets)
+    console.log(`Asset library refreshed:`, assets)
     videoAssets.value = assets.filter((asset) => asset.name.toLowerCase().endsWith('.mp4'))
     videoDurationCache.value.clear()
     if (!videoAssets.value.length) {
@@ -120,7 +120,7 @@ const refreshAssets = async () => {
     const errorMessage = error?.error?.message || error?.message || error
     toast.error({
       component: {
-        // 使用vnode方式创建自定义错误弹窗实例，以获得良好的类型提示
+        // Create custom error toast instance using vnode method for better type hints
         render: () =>
           h(ActionToastEmbed, {
             message: t('features.assets.errors.loadFailed'),
@@ -157,7 +157,7 @@ const readVideoDuration = (assetPath: string) => {
       : `file:///${normalizedPath}`
     const timeout = window.setTimeout(() => {
       cleanup()
-      reject(new Error('读取视频元数据超时'))
+      reject(new Error('Video metadata read timeout'))
     }, 8000)
 
     const cleanup = () => {
@@ -173,7 +173,7 @@ const readVideoDuration = (assetPath: string) => {
       const duration = video.duration
       cleanup()
       if (!Number.isFinite(duration) || duration <= 0) {
-        reject(new Error('视频时长无效'))
+        reject(new Error('Invalid video duration'))
         return
       }
       videoDurationCache.value.set(assetPath, duration)
@@ -182,7 +182,7 @@ const readVideoDuration = (assetPath: string) => {
 
     const onError = () => {
       cleanup()
-      reject(new Error('视频元数据读取失败'))
+      reject(new Error('Failed to read video metadata'))
     }
 
     video.preload = 'metadata'
@@ -192,7 +192,7 @@ const readVideoDuration = (assetPath: string) => {
   })
 }
 
-// 获取视频分镜随机素材片段
+// Get random storyboard asset segments
 const getVideoSegments = async (options: { duration: number }) => {
   if (options.duration <= 0) {
     throw new Error(t('features.assets.errors.audioDurationInvalid'))
@@ -202,7 +202,7 @@ const getVideoSegments = async (options: { duration: number }) => {
     throw new Error(t('features.assets.errors.noVideoAssets'))
   }
 
-  // 搜集随机素材片段
+  // Collect random asset segments
   const segments: Pick<RenderVideoParams, 'videoFiles' | 'timeRanges'> = {
     videoFiles: [],
     timeRanges: [],
@@ -221,13 +221,13 @@ const getVideoSegments = async (options: { duration: number }) => {
       throw new Error(t('features.assets.errors.durationInsufficient'))
     }
 
-    // 如果素材库中没有剩余素材，时长还不够，重新来一轮
+    // If no remaining assets in library and duration insufficient, restart round
     if (tempVideoAssets.length === 0) {
       tempVideoAssets = structuredClone(toRaw(videoAssets.value))
       continue
     }
 
-    // 获取一个随机素材以及相关信息
+    // Get a random asset and related information
     const randomAsset = random.choice(tempVideoAssets)!
     const randomAssetIndex = tempVideoAssets.findIndex((asset) => asset.path === randomAsset.path)
     if (randomAssetIndex < 0) {
@@ -235,7 +235,7 @@ const getVideoSegments = async (options: { duration: number }) => {
       continue
     }
 
-    // 删除已选素材
+    // Remove selected asset
     tempVideoAssets.splice(randomAssetIndex, 1)
 
     attempts += 1
@@ -244,7 +244,7 @@ const getVideoSegments = async (options: { duration: number }) => {
     try {
       randomAssetDuration = await readVideoDuration(randomAsset.path)
     } catch (error) {
-      console.warn('读取素材时长失败，跳过该素材：', randomAsset.path, error)
+      console.warn('Failed to read asset duration, skipping this asset:', randomAsset.path, error)
       continue
     }
 
@@ -252,7 +252,7 @@ const getVideoSegments = async (options: { duration: number }) => {
       continue
     }
 
-    // 如果素材时长小于最小片段时长，直接添加
+    // If asset duration is less than minimum segment duration, add directly
     if (randomAssetDuration < minSegmentDuration) {
       segments.videoFiles.push(randomAsset.path)
       segments.timeRanges.push([String(0), String(trunc3(randomAssetDuration))])
@@ -260,18 +260,18 @@ const getVideoSegments = async (options: { duration: number }) => {
       continue
     }
 
-    // 如果素材时长大于最小片段时长，随机一个片段
+    // If asset duration is greater than minimum segment duration, randomize a segment
     let randomSegmentDuration = random.float(
       minSegmentDuration,
       Math.min(maxSegmentDuration, randomAssetDuration),
     )
 
-    // 处理最后一个片段时长超出规划时长情况
+    // Handle case where last segment duration exceeds planned duration
     if (currentTotalDuration + randomSegmentDuration > options.duration) {
       randomSegmentDuration = options.duration - currentTotalDuration
     }
 
-    // 处理最后一个片段时长小于最小片段时长情况
+    // Handle case where last segment duration is less than minimum segment duration
     if (options.duration - currentTotalDuration - randomSegmentDuration < minSegmentDuration) {
       if (options.duration - currentTotalDuration < randomAssetDuration) {
         randomSegmentDuration = options.duration - currentTotalDuration
@@ -289,16 +289,16 @@ const getVideoSegments = async (options: { duration: number }) => {
 
     console.table([
       {
-        素材名称: randomAsset.name,
-        素材时长: randomAssetDuration,
-        片段开始: trunc3(randomSegmentStart),
-        片段时长: trunc3(randomSegmentDuration),
+        'Asset Name': randomAsset.name,
+        'Asset Duration': randomAssetDuration,
+        'Segment Start': trunc3(randomSegmentStart),
+        'Segment Duration': trunc3(randomSegmentDuration),
       },
     ])
   }
 
-  console.log('随机素材片段总时长:', currentTotalDuration)
-  console.log('随机素材片段汇总:', segments)
+  console.log('Total duration of random asset segments:', currentTotalDuration)
+  console.log('Random asset segments summary:', segments)
 
   return segments
 }

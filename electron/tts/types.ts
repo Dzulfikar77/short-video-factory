@@ -13,7 +13,7 @@ export interface EdgeTtsSynthesizeToFileParams extends EdgeTtsSynthesizeCommonPa
 
 export interface EdgeTtsSynthesizeToFileResult {
   /**
-   * 合成后的音频时长，单位秒
+   * Synthesized audio duration in seconds
    */
   duration: number | undefined
 }

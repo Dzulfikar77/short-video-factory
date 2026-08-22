@@ -110,11 +110,11 @@ const handleTryListening = async () => {
     currentAudio.play()
     toast.info(t('features.tts.info.playTryAudio'))
   } catch (error: any) {
-    console.log('试听语音合成失败', error)
+    console.log('Try-listen speech synthesis failed', error)
     const errorMessage = error?.error?.message || error?.message || error
     toast.error({
       component: {
-        // 使用vnode方式创建自定义错误弹窗实例，以获得良好的类型提示
+        // Create a custom error toast instance via vnode for proper type hints
         render: () =>
           h(ActionToastEmbed, {
             message: t('features.tts.errors.trySynthesisNetwork'),
@@ -165,13 +165,13 @@ const speedItems = computed(() => {
 const fetchVoices = async () => {
   try {
     appStore.originalVoicesList = await window.electron.edgeTtsGetVoiceList()
-    console.log('EdgeTTS语音列表更新：', appStore.originalVoicesList)
+    console.log('EdgeTTS voice list updated:', appStore.originalVoicesList)
   } catch (error: any) {
-    console.log('获取EdgeTTS语音列表失败', error)
+    console.log('Failed to fetch EdgeTTS voice list', error)
     const errorMessage = error?.error?.message || error?.message || error
     toast.error({
       component: {
-        // 使用vnode方式创建自定义错误弹窗实例，以获得良好的类型提示
+        // Create a custom error toast instance via vnode for proper type hints
         render: () =>
           h(ActionToastEmbed, {
             message: t('features.tts.errors.fetchVoicesFailed'),
@@ -220,7 +220,7 @@ const synthesizedSpeechToFile = async (option: { text: string; withCaption?: boo
     })
     return result
   } catch (error) {
-    console.log('语音合成失败', error)
+    console.log('Speech synthesis failed', error)
     throw new Error(t('features.tts.errors.synthesisFailed') + ' ' + String(error))
   }
 }

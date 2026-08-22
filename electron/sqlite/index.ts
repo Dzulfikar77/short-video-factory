@@ -16,12 +16,12 @@ process.env.APP_ROOT = path.join(__dirname, '..')
 export const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL']
 export const NATIVE_DIST = path.join(process.env.APP_ROOT, 'dist-native')
 
-// 根据当前系统和架构，判断使用哪个native模块
+// Determine which native module to use based on current system and architecture
 const platform = process.platform
 const arch = process.arch
 const nativeDir = `${platform}-${arch}`
 
-// 设置native模块路径
+// Set native module path
 const nativePath = VITE_DEV_SERVER_URL
   ? path.join(
       process.env.APP_ROOT,
@@ -122,7 +122,7 @@ class Database {
 
       const stmt = this.db.prepare(sql)
 
-      // 开始事务
+      // Start transaction
       const transaction = this.db.transaction((records) => {
         for (const record of records) {
           stmt.run(...Object.values(record))

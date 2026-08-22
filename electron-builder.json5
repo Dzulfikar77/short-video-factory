@@ -1,14 +1,14 @@
 // @see - https://www.electron.build/configuration/configuration
 {
   $schema: 'https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json',
-  productName: '短视频工厂',
+  productName: 'Short Video Factory',
   appId: 'com.yils.short-video-factory',
   asar: true,
   directories: {
     output: 'release/${version}',
   },
   files: ['dist', 'dist-electron', 'dist-native', 'locales'],
-  npmRebuild: false, // disable rebuild node_modules 使用包内自带预构建二进制，而不重新构建
+  npmRebuild: false, // disable rebuild: use prebuilt binaries bundled in node_modules instead of rebuilding
   beforePack: './build/scripts/before-pack.js',
   mac: {
     target: [
@@ -30,7 +30,7 @@
     icon: './public/icon.png',
   },
   nsis: {
-    language: '0x0804',
+    language: '1033', // English (US) installer UI
     oneClick: false,
     perMachine: false,
     allowToChangeInstallationDirectory: true,
@@ -41,5 +41,5 @@
     artifactName: '${name}-${version}-linux-${arch}.${ext}',
     icon: './public/icon.png',
   },
-  publish: null, // disable auto publish 防止重复发版
+  publish: null, // disable auto publish to prevent duplicate releases
 }

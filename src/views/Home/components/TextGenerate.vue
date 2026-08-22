@@ -125,7 +125,7 @@ defineProps<{
   disabled?: boolean
 }>()
 
-// 生成文案
+// Generate script
 const outputText = ref('')
 const isGenerating = ref(false)
 const abortController = ref<AbortController | null>(null)
@@ -146,7 +146,7 @@ const handleGenerate = async (options?: { noToast?: boolean }) => {
     const result = streamText({
       model: openai.chat(appStore.llmConfig.modelName),
       // system: ``,
-      // 未来也许会设置一个系统提示词，但现在必须注释掉，因为部分接口提交空 system prompt 会报错
+      // A system prompt may be set in the future, but it must be commented out for now because some APIs error on empty system prompts
       prompt: appStore.prompt,
       onError: (error) => {
         throw error
@@ -165,8 +165,8 @@ const handleGenerate = async (options?: { noToast?: boolean }) => {
       if (!options?.noToast) {
         toast.error({
           component: {
-            // 使用vnode方式创建自定义错误弹窗实例，以获得良好的类型提示
-            render: () =>
+          // Create custom error toast instance using vnode method for better type hints
+          render: () =>
               h(ActionToastEmbed, {
                 message: t('features.llm.errors.generateFailed'),
                 detail: String(errorMessage),
@@ -197,7 +197,7 @@ const handleStopGenerate = () => {
   }
 }
 
-// 配置大模型接口
+// Configure large language model interface
 const config = ref(structuredClone(toRaw(appStore.llmConfig)))
 const configDialogShow = ref(false)
 const resetConfigDialog = () => {
@@ -212,7 +212,7 @@ const handleSaveConfig = () => {
   configDialogShow.value = false
 }
 
-// 测试大模型连通性
+// Test large language model connectivity
 enum TestStatusEnum {
   LOADING = 'loading',
   SUCCESS = 'success',
@@ -236,7 +236,7 @@ const handleTestConfig = async () => {
     const errorMessage = error?.error?.message || error?.message || error
     toast.error({
       component: {
-        // 使用vnode方式创建自定义错误弹窗实例，以获得良好的类型提示
+        // Create custom error toast instance using vnode method for better type hints
         render: () =>
           h(ActionToastEmbed, {
             message: t('features.llm.errors.connectionFailed'),
@@ -254,11 +254,11 @@ const handleTestConfig = async () => {
   }
 }
 
-// 获取当前文案
+// Get current script
 const getCurrentOutputText = () => {
   return outputText.value
 }
-// 清空文案
+// Clear script
 const clearOutputText = () => {
   outputText.value = ''
 }

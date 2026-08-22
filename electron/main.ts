@@ -11,13 +11,13 @@ import { i18nLanguages } from './i18n/common-options'
 import useCookieAllowCrossSite from './lib/cookie-allow-cross-site'
 import { sendStatEvent } from './lib/stat'
 
-// 用于引入 CommonJS 模块的方法
+// Method for importing CommonJS modules
 // import { createRequire } from 'node:module'
 // const require = createRequire(import.meta.url)
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-// 已构建的目录结构
+// Built directory structure
 //
 // ├─┬─┬ dist
 // │ │ └── index.html
@@ -28,7 +28,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 // │
 process.env.APP_ROOT = path.join(__dirname, '..')
 
-// 🚧 使用['ENV_NAME'] 避免 vite:define plugin - Vite@2.x
+// 🚧 Use ['ENV_NAME'] to avoid vite:define plugin - Vite@2.x
 export const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL']
 export const MAIN_DIST = path.join(process.env.APP_ROOT, 'dist-electron')
 export const RENDERER_DIST = path.join(process.env.APP_ROOT, 'dist')
@@ -63,16 +63,16 @@ function createWindow() {
     },
   })
 
-  // 优化应用进入体验
+  // Optimize app entry experience
   win.once('ready-to-show', () => {
     win?.show()
   })
 
-  //测试向渲染器进程发送的活动推送消息。
+  // Test sending active push messages to renderer process
   win.webContents.on('did-finish-load', () => {
     win?.webContents.send('main-process-message', new Date().toLocaleString())
     void sendStatEvent({
-      title: '软件主界面',
+      title: 'App Main Window',
       userAgent: win?.webContents.getUserAgent(),
     })
   })
@@ -172,9 +172,9 @@ function buildMenu() {
   Menu.setApplicationMenu(menu)
 }
 
-//关闭所有窗口后退出，macOS除外。在那里，这很常见
-//让应用程序及其菜单栏保持活动状态，直到用户退出
-//显式使用Cmd+Q。
+// Quit when all windows are closed, except on macOS. There, it's common
+// for applications and their menu bar to stay active until the user quits
+// explicitly with Cmd+Q.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
@@ -183,14 +183,14 @@ app.on('window-all-closed', () => {
 })
 
 app.on('activate', () => {
-  //在OS X上，当出现以下情况时，通常会在应用程序中重新创建一个窗口
-  //单击dock图标后，没有其他打开的窗口。
+  // On OS X it's common to re-create a window in the app when the
+  // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow()
   }
 })
 
-// 禁用硬件加速
+// Disable hardware acceleration
 // app.disableHardwareAcceleration();
 
 app.whenReady().then(() => {
@@ -203,10 +203,10 @@ app.whenReady().then(() => {
     buildMenu()
   })
 
-  // 允许跨站请求携带cookie
+  // Allow cross-site requests to carry cookies
   useCookieAllowCrossSite()
-  // 禁用 CORS
+  // Disable CORS
   app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors')
-  // 允许本地网络请求
+  // Allow local network requests
   app.commandLine.appendSwitch('disable-features', 'BlockInsecurePrivateNetworkRequests')
 })

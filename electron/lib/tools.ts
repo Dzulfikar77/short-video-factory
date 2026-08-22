@@ -3,7 +3,7 @@ import path from 'node:path'
 import { app } from 'electron'
 
 /**
- * 生成有序的唯一文件名，用于处理文件已存在的情况
+ * Generate a unique filename for handling file already exists situations
  */
 export function generateUniqueFileName(filePath: string): string {
   const dir = path.dirname(filePath)
@@ -20,7 +20,7 @@ export function generateUniqueFileName(filePath: string): string {
 }
 
 /**
- * 获取软件的临时文件存储路径
+ * Get the app's temporary file storage path
  */
 export function getAppTempPath() {
   return path.join(app.getPath('temp'), app.name).replace(/\\/g, '/')

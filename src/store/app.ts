@@ -15,13 +15,13 @@ export enum RenderStatus {
 export const useAppStore = defineStore(
   'app',
   () => {
-    // 国际化区域设置
+    // Internationalization locale settings
     const locale = ref('')
     const updateLocale = (newLocale: string) => {
       locale.value = newLocale
     }
 
-    // 大模型文案生成
+    // Large language model script generation
     const prompt = ref('')
     const llmConfig = ref({
       modelName: '',
@@ -32,11 +32,11 @@ export const useAppStore = defineStore(
       llmConfig.value = newConfig
     }
 
-    // 视频素材管理
+    // Video asset management
     const videoAssetsFolder = ref('')
     const videoExportFolder = ref('')
 
-    // 语音合成
+    // Speech synthesis
     const originalVoicesList = ref<EdgeTTSVoice[]>([])
     const languageList = computed(() => {
       return originalVoicesList.value
@@ -45,22 +45,22 @@ export const useAppStore = defineStore(
         .filter((language, index, arr) => arr.indexOf(language) === index)
     })
     const genderList = ref([
-      { label: '男性', value: 'Male' },
-      { label: '女性', value: 'Female' },
-      // { label: '中性', value: 'Neutral' },
+      { label: 'Male', value: 'Male' },
+      { label: 'Female', value: 'Female' },
+      // { label: 'Neutral', value: 'Neutral' },
     ])
     const speedList = ref([
-      { label: '慢', value: -30 },
-      { label: '中', value: 0 },
-      { label: '快', value: 30 },
+      { label: 'Slow', value: -30 },
+      { label: 'Medium', value: 0 },
+      { label: 'Fast', value: 30 },
     ])
     const language = ref<string>()
     const gender = ref<string>()
     const voice = ref<EdgeTTSVoice | null>(null)
     const speed = ref(0)
-    const tryListeningText = ref('Hello，欢迎使用短视频工厂！')
+    const tryListeningText = ref('Hello, welcome to Short Video Factory!')
 
-    // 合成配置
+    // Rendering configuration
     const renderConfig = ref({
       bgmPath: '',
       outputSize: { width: 1080, height: 1920 },
@@ -77,7 +77,7 @@ export const useAppStore = defineStore(
       renderStatus.value = newStatus
     }
 
-    // 缩放倍率配置
+    // Zoom factor configuration
     const zoomOptions = [0.5, 0.75, 0.9, 1.0, 1.1, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0]
     const zoomFactor = ref(1.0)
     const updateZoomFactor = (factor: number) => {

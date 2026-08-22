@@ -1,7 +1,7 @@
 import { app, session } from 'electron'
 
 /**
- * 解决 electron15 后，跨域cookie无法携带问题
+ * Fix cross-origin cookie issue after Electron 15
  */
 export default function useCookieAllowCrossSite() {
   app.whenReady().then(() => {

@@ -1,102 +1,102 @@
 <a id="readme-top"></a>
 
-<!-- 项目海报 -->
+<!-- Project Poster -->
 <div align="center">
   <img src="images/ScreenShot.png" alt="Poster" width="100%">
 </div>
 
 ---
 
-<!-- 项目LOGO -->
+<!-- Project Logo -->
 <br />
 <div align="center">
   <a href="https://github.com/YILS-LIN/short-video-factory">
     <img src="public/icon.png" alt="Logo" height="100">
   </a>
 
-<h3 align="center">AI Short Video Factory - 短视频工厂</h3>
+<h3 align="center">AI Short Video Factory</h3>
 
   <p align="center">
-    🚀 一键生成产品营销与泛内容短视频，AI批量自动剪辑，高颜值跨平台桌面端工具
+    Generate product-marketing and general short videos in one click — AI-powered batch auto-editing, beautiful cross-platform desktop app
   </p>
 
-  <!-- 项目徽章 -->
+  <!-- Project Badges -->
 
-[![贡献者][contributors-shield]][contributors-url]
-[![分支][forks-shield]][forks-url]
-[![星标][stars-shield]][stars-url]
-[![问题][issues-shield]][issues-url]
-[![最新版本][release-shield]][release-url]
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stars][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![Latest Release][release-shield]][release-url]
 
-<!-- ![发布日期][release-date-shield] -->
+<!-- ![Release Date][release-date-shield] -->
 
-[![许可证][license-shield]][license-url]
+[![License][license-shield]][license-url]
 
   <p align="center">
-    <a href="https://github.com/YILS-LIN/short-video-factory/issues/new?labels=bug&template=bug-report---.md">报告Bug</a>
+    <a href="https://github.com/YILS-LIN/short-video-factory/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     &middot;
-    <a href="https://github.com/YILS-LIN/short-video-factory/issues/new?labels=enhancement&template=feature-request---.md">请求功能</a>
+    <a href="https://github.com/YILS-LIN/short-video-factory/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
   </p>
 </div>
 
-<!-- 关于项目 -->
+<!-- About The Project -->
 
-## 📖 关于项目
+## 📖 About The Project
 
-短视频工厂是一个开源的桌面端应用，旨在通过AI技术简化短视频的制作流程。用户可以通过简单的提示词文本+视频分镜素材，快速且自动的剪辑出高质量的产品营销和泛内容短视频。该项目集成了AI驱动的文案生成、语音合成、视频剪辑、字幕特效等功能，旨在为用户提供开箱即用的短视频制作体验。
+AI Short Video Factory is an open-source desktop application that streamlines short-form video production through AI technology. Users can quickly and automatically edit high-quality product-marketing and general content videos using simple text prompts and storyboard assets. The project integrates AI-driven script generation, speech synthesis, video editing, subtitle effects, and more, delivering an out-of-the-box short video production experience.
 
-### 核心功能
+### Key Features
 
-- 🤖 **AI驱动**：集成了最新的AI技术，提升视频制作效率和质量
-- 📝 **文案生成**：基于提示词生成高质量的短视频文案
-- 🎥 **自动剪辑**：支持多种视频格式，自动化批量处理视频剪辑任务
-- 🎙️ **语音合成**：将生成的文案转换为自然流畅的语音
-- 🎬 **字幕特效**：自动添加字幕和特效，提升视频质量
-- 📦 **批量处理**：支持批量任务，按预设自动持续合成视频
-- 🌐 **多语言支持**：支持中文、英文等多种语言，满足不同用户需求
-- 📦 **开箱即用**：无需复杂配置，用户可以快速上手
-- 📈 **持续更新**：定期发布新版本，修复bug并添加新功能
-- 🔒 **安全可靠**：完全本地本地化运行，确保用户数据安全
-- 🎨 **用户友好**：简洁直观的用户界面，易于操作
-- 💻 **多平台支持**：支持Windows、macOS和Linux等多个操作系统
+- 🤖 **AI-Powered**: Integrates cutting-edge AI technology to boost video production efficiency and quality
+- 📝 **Script Generation**: Generate high-quality short video scripts from text prompts
+- 🎥 **Auto Mixed Cutting**: Supports multiple video formats with automated batch processing for video editing tasks
+- 🎙️ **Speech Synthesis**: Convert generated scripts into natural-sounding voiceovers
+- 🎬 **Subtitle Effects**: Automatically add subtitles and effects to enhance video quality
+- 📦 **Batch Processing**: Support batch tasks with automated continuous video composition based on presets
+- 🌐 **Multi-Language Support**: Supports multiple languages including Chinese and English to meet diverse user needs
+- 📦 **Out-of-the-Box**: No complex configuration required — users can get started quickly
+- 📈 **Continuous Updates**: Regular new releases with bug fixes and feature additions
+- 🔒 **Secure & Reliable**: Fully localized operation to ensure user data security
+- 🎨 **User-Friendly**: Clean, intuitive interface that's easy to operate
+- 💻 **Multi-Platform Support**: Supports Windows, macOS, Linux, and other operating systems
 
-<p align="right">(<a href="#readme-top">返回顶部</a>)</p>
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## 🚀 开始使用
+## 🚀 Getting Started
 
-前往 [Github Release](https://github.com/YILS-LIN/short-video-factory/releases) 下载最新版本
+Visit [Github Release](https://github.com/YILS-LIN/short-video-factory/releases) to download the latest version
 
-前往 [官方文档](https://short-video-factory.yils.blog) 查看使用手册
+Visit [Official Documentation](https://short-video-factory.yils.blog) to view the user manual
 
-<p align="right">(<a href="#readme-top">返回顶部</a>)</p>
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## 🗺️ 路线图
+## 🗺️ Roadmap
 
-**喜欢可以点个 Star 支持一下哦！**
+**If you like this project, please give it a Star!**
 
-下面是已实现和计划中的功能：
+Here are implemented and planned features:
 
-- [x] 文案生成，兼容通用的 OpenAI 接口格式
-- [x] 语音合成，支持EdgeTTS
-- [x] 视频剪辑，文案、视频、音频、字幕合成，自动混剪
-- [x] 批量处理，支持一个批量任务，按预设自动持续合成视频
-- [x] 多语言支持，能够支持中文、英文等多种语言
-- [x] 完善的使用手册
-- [ ] 更全面的参数调整
-- [ ] 更多的语音合成API
-- [ ] 字幕特效，支持多种字幕样式和特效
+- [x] Script generation, compatible with standard OpenAI interface format
+- [x] Speech synthesis, supports EdgeTTS
+- [x] Video editing, script, video, audio, subtitle composition, auto mixed cutting
+- [x] Batch processing, supports batch tasks with automated continuous video composition based on presets
+- [x] Multi-language support, able to support Chinese, English, and other languages
+- [x] Complete user manual
+- [ ] More comprehensive parameter adjustments
+- [ ] Additional speech synthesis APIs
+- [ ] Subtitle effects, support multiple subtitle styles and effects
 
-查看[开放问题](https://github.com/YILS-LIN/short-video-factory/issues)以获取提议功能（和已知问题）的完整列表。
+See [open issues](https://github.com/YILS-LIN/short-video-factory/issues) for a full list of proposed features (and known issues).
 
-<p align="right">(<a href="#readme-top">返回顶部</a>)</p>
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## 🎞️ 示例视频
+## 🎞️ Example Videos
 
 <table>
 <thead>
 <tr>
-<th align="center"><g-emoji class="g-emoji" alias="arrow_forward">▶️</g-emoji> 《产品营销短视频》</th>
-<th align="center"><g-emoji class="g-emoji" alias="arrow_forward">▶️</g-emoji> 《暖心治愈系语录》</th>
+<th align="center"><g-emoji class="g-emoji" alias="arrow_forward">▶️</g-emoji> Product Marketing Short Video</th>
+<th align="center"><g-emoji class="g-emoji" alias="arrow_forward">▶️</g-emoji> Heartwarming Healing Quotes</th>
 </tr>
 </thead>
 <tbody>
@@ -107,67 +107,67 @@
 </tbody>
 </table>
 
-注：素材来源于网络，仅用于展示剪辑效果
+Note: Source materials are from the internet, used only to demonstrate editing capabilities
 
-<p align="right">(<a href="#readme-top">返回顶部</a>)</p>
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- 贡献 -->
+<!-- Contributing -->
 
-## 🤝 贡献
+## 🤝 Contributing
 
-贡献让开源社区成为了一个学习、启发和创造的绝佳场所。**非常感谢**您所做的任何贡献。
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. **Thank you** for any contributions you make.
 
-如果您有可以改善此项目的建议，请fork本项目仓库并创建一个pull request。您也可以简单地创建一个带有"enhancement"标签的issue。
-不要忘记给项目点个Star！再次感谢！
+If you have suggestions to improve this project, please fork the repository and create a pull request. You can also simply open an issue with the "enhancement" tag.
+Don't forget to give the project a Star! Thanks again!
 
-1. Fork此项目
-2. 创建您的功能分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交您的更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 开启一个Pull Request
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-### 主要贡献者：
+### Top Contributors:
 
 <a href="https://github.com/YILS-LIN/short-video-factory/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=YILS-LIN/short-video-factory" alt="contrib.rocks image" />
 </a>
 
-<p align="right">(<a href="#readme-top">返回顶部</a>)</p>
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## 💖 鸣谢
+## 💖 Acknowledgements
 
 - [rany2/edge-tts](https://github.com/rany2/edge-tts)
 - [duyquangnvx/edge-tts](https://github.com/duyquangnvx/edge-tts)
 
-<p align="right">(<a href="#readme-top">返回顶部</a>)</p>
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- 许可证 -->
+<!-- License -->
 
-## 🎗 许可证
+## 🎗 License
 
-[![许可证][license-shield]][license-url]
+[![License][license-shield]][license-url]
 
 Copyright © 2025 YILS.
 
-<p align="right">(<a href="#readme-top">返回顶部</a>)</p>
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## 🐱 捐赠
+## 🐱 Donate
 
-如果这个项目对你有帮助，欢迎请作者喝杯咖啡(或者啤酒) 🍺
+If this project has helped you, feel free to buy the author a coffee (or a beer)
 
-你的 **Star ⭐** 和 **捐赠** 是我持续更新的最大动力！
+Your **Star ⭐** and **Donation** are my biggest motivation for ongoing updates!
 
 <div align="left">
-  <img src="https://github.com/user-attachments/assets/6b832dd3-38ea-4927-9c3b-97549c77a1f0" alt="YILS的微信赞赏码" width="400">
+  <img src="https://github.com/user-attachments/assets/6b832dd3-38ea-4927-9c3b-97549c77a1f0" alt="YILS WeChat reward QR code" width="400">
 </div>
 
-👉 在此处查看捐赠者名单：[千古留名 - 捐赠者留言板](https://short-video-factory.yils.blog/donate/list.html)
+👉 View the donor list here: [Eternal Recognition - Donor Guestbook](https://short-video-factory.yils.blog/donate/list.html)
 
-<p align="right">(<a href="#readme-top">返回顶部</a>)</p>
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- 星标历史 -->
+<!-- Star History -->
 
-## ⭐ 星标历史
+## ⭐ Star History
 
 <a href="https://star-history.dera.page/#YILS-LIN/short-video-factory">
  <picture>
@@ -177,9 +177,9 @@ Copyright © 2025 YILS.
  </picture>
 </a>
 
-<p align="right">(<a href="#readme-top">返回顶部</a>)</p>
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- MARKDOWN链接和图片 -->
+<!-- MARKDOWN LINKS & IMAGES -->
 
 [contributors-shield]: https://img.shields.io/github/contributors/YILS-LIN/short-video-factory.svg?color=c4f042&labelColor=black&style=flat-square
 [contributors-url]: https://github.com/YILS-LIN/short-video-factory/graphs/contributors

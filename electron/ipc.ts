@@ -18,7 +18,7 @@ let windowMaximizedByApp = false
 
 process.env.APP_ROOT = path.join(__dirname, '..')
 
-// 🚧 使用['ENV_NAME'] 避免 vite:define plugin - Vite@2.x
+// 🚧 Use ['ENV_NAME'] to avoid vite:define plugin - Vite@2.x
 export const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL']
 export const MAIN_DIST = path.join(process.env.APP_ROOT, 'dist-electron')
 export const RENDERER_DIST = path.join(process.env.APP_ROOT, 'dist')
@@ -76,28 +76,28 @@ function resolveDefaultFolderPath(customPath?: string | null) {
 }
 
 export default function initIPC() {
-  // sqlite 查询
+  // SQLite query
   ipcMain.handle('sqlite-query', (_event, params) => sqQuery(params))
-  // sqlite 插入
+  // SQLite insert
   ipcMain.handle('sqlite-insert', (_event, params) => sqInsert(params))
-  // sqlite 更新
+  // SQLite update
   ipcMain.handle('sqlite-update', (_event, params) => sqUpdate(params))
-  // sqlite 删除
+  // SQLite delete
   ipcMain.handle('sqlite-delete', (_event, params) => sqDelete(params))
-  // sqlite 批量插入或更新
+  // SQLite bulk insert or update
   ipcMain.handle('sqlite-bulk-insert-or-update', (_event, params) => sqBulkInsertOrUpdate(params))
 
-  // 是否最大化
+  // Check if window is maximized
   ipcMain.handle('is-win-maxed', (event) => {
     const win = BrowserWindow.fromWebContents(event.sender)
     return Boolean(win?.isMaximized() || windowMaximizedByApp)
   })
-  //最小化
+  // Minimize window
   ipcMain.on('win-min', (event) => {
     const win = BrowserWindow.fromWebContents(event.sender)
     win?.minimize()
   })
-  //最大化
+  // Maximize window
   ipcMain.on('win-max', (event) => {
     const win = BrowserWindow.fromWebContents(event.sender)
     if (win?.isMaximized() || windowMaximizedByApp) {
@@ -108,7 +108,7 @@ export default function initIPC() {
       windowMaximizedByApp = true
     }
   })
-  // 切换最大化/还原
+  // Toggle window maximize/restore
   ipcMain.on('toggle-window-maximize', (event) => {
     const win = BrowserWindow.fromWebContents(event.sender)
     if (!win) return
@@ -121,7 +121,7 @@ export default function initIPC() {
       windowMaximizedByApp = true
     }
   })
-  // 拖拽前准备窗口状态：最大化时先还原，再返回还原后的窗口尺寸
+  // Prepare window state for drag: restore if maximized, then return restored bounds
   ipcMain.handle('prepare-window-drag', (event) => {
     const win = BrowserWindow.fromWebContents(event.sender)
     if (!win) return null
@@ -137,45 +137,45 @@ export default function initIPC() {
       wasMaximized,
     }
   })
-  // 获取窗口位置和大小
+  // Get window bounds
   ipcMain.handle('get-window-bounds', (event) => {
     const win = BrowserWindow.fromWebContents(event.sender)
     return win?.getBounds()
   })
-  // 设置窗口位置
+  // Set window position
   ipcMain.on('set-window-position', (event, x: number, y: number) => {
     const win = BrowserWindow.fromWebContents(event.sender)
     win?.setPosition(Math.round(x), Math.round(y))
   })
-  //关闭程序
+  // Close window
   ipcMain.on('win-close', (event) => {
     const win = BrowserWindow.fromWebContents(event.sender)
     win?.close()
   })
 
-  // 设置缩放倍率
+  // Set zoom factor
   ipcMain.on('set-zoom-factor', (event, factor: number) => {
     const win = BrowserWindow.fromWebContents(event.sender)
     win?.webContents.setZoomFactor(factor)
   })
 
-  // 打开外部链接
+  // Open external link
   ipcMain.handle('open-external', (_event, params: OpenExternalParams) => {
     shell.openExternal(params.url)
   })
 
-  // 选择文件夹
+  // Select folder
   ipcMain.handle('select-folder', async (event, params?: SelectFolderParams) => {
     const win = BrowserWindow.fromWebContents(event.sender)
     if (!win) {
-      throw new Error('无法获取窗口')
+      throw new Error('Unable to get window')
     }
 
     const defaultPath = resolveDefaultFolderPath(params?.defaultPath)
 
     const dialogOptions: Electron.OpenDialogOptions = {
       properties: ['openDirectory'],
-      title: params?.title || '选择文件夹',
+      title: params?.title || 'Select Folder',
     }
 
     if (defaultPath) {
@@ -186,12 +186,12 @@ export default function initIPC() {
 
     const result = await dialog.showOpenDialog(win, dialogOptions)
     if (!result.canceled && result.filePaths.length > 0) {
-      return result.filePaths[0] // 返回绝对路径
+      return result.filePaths[0] // Return absolute path
     }
     return null
   })
 
-  // 读取文件夹内所有文件
+  // Get list of files from folder
   ipcMain.handle('list-files-from-folder', async (_event, params: ListFilesFromFolderParams) => {
     const files = await fs.promises.readdir(params.folderPath, { withFileTypes: true })
     return files
@@ -202,30 +202,30 @@ export default function initIPC() {
       }))
   })
 
-  // 获取EdgeTTS语音列表
+  // Get EdgeTTS voice list
   ipcMain.handle('edge-tts-get-voice-list', () => edgeTtsGetVoiceList())
 
-  // 统计事件上报
+  // Track statistics event
   ipcMain.handle('stat-track', (_event, params: StatEventParams) => sendStatEvent(params))
 
-  // 语音合成并获取Base64
+  // Speech synthesis and get Base64
   ipcMain.handle('edge-tts-synthesize-to-base64', (_event, params) =>
     edgeTtsSynthesizeToBase64(params),
   )
 
-  // 保存语音合成到文件
+  // Save speech synthesis to file
   ipcMain.handle('edge-tts-synthesize-to-file', (_event, params) => edgeTtsSynthesizeToFile(params))
 
-  // 渲染视频
+  // Render video
   ipcMain.handle('render-video', (_event, params) => {
-    // 进度回调
+    // Progress callback
     const onProgress = (progress: number) => {
       _event.sender.send('render-video-progress', progress)
     }
 
-    // 创建 AbortController
+    // Create AbortController
     const controller = new AbortController()
-    // 监听取消事件
+    // Listen for cancel event
     ipcMain.once('cancel-render-video', () => {
       controller.abort()
     })

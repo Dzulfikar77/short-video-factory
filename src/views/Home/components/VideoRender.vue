@@ -257,7 +257,7 @@ const handleToggleAutoBatch = () => {
   appStore.autoBatch = !appStore.autoBatch
 }
 
-// 配置合成选项
+// Configure rendering options
 const config = ref(structuredClone(toRaw(appStore.renderConfig)))
 const configDialogShow = ref(false)
 const resetConfigDialog = () => {
@@ -272,13 +272,13 @@ const handleSaveConfig = () => {
   configDialogShow.value = false
 }
 
-// 选择文件夹
+// Select folder
 const handleSelectOutputFolder = async () => {
   const folderPath = await window.electron.selectFolder({
     title: t('dialogs.selectOutputFolder'),
     defaultPath: config.value.outputPath,
   })
-  console.log('用户选择视频导出文件夹，绝对路径：', folderPath)
+  console.log('User selected video export folder, absolute path:', folderPath)
   if (folderPath) {
     config.value.outputPath = folderPath
   }
@@ -288,7 +288,7 @@ const handleSelectBgmFolder = async () => {
     title: t('dialogs.selectBgmFolder'),
     defaultPath: config.value.bgmPath,
   })
-  console.log('用户选择背景音乐文件夹，绝对路径：', folderPath)
+  console.log('User selected background music folder, absolute path:', folderPath)
   if (folderPath) {
     config.value.bgmPath = folderPath
   }

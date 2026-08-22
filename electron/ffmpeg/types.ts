@@ -1,7 +1,7 @@
 export interface AudioVolumeConfig {
-  voiceVolume?: string // voice音量，如 "1.5"（倍数）或 "-3dB"（分贝）
-  bgmVolume?: string // bgm音量，如 "0.5"（倍数）或 "-6dB"（分贝）
-  targetLoudness?: string // 目标响度（LUFS），如 "-16"（YouTube推荐）或 "-14"（Spotify推荐）
+  voiceVolume?: string // Voice volume, e.g. "1.5" (multiplier) or "-3dB" (decibels)
+  bgmVolume?: string // BGM volume, e.g. "0.5" (multiplier) or "-6dB" (decibels)
+  targetLoudness?: string // Target loudness (LUFS), e.g. "-16" (YouTube recommended) or "-14" (Spotify recommended)
 }
 
 export interface RenderVideoParams {

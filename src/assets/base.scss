@@ -12,20 +12,20 @@ body {
   background: linear-gradient(180deg, #f3f3f3, #ffffff);
 }
 
-/* 滚动条样式 */
+/* Scrollbar styles */
 ::-webkit-scrollbar {
-  width: 10px; /* 垂直滚动条宽度 */
-  height: 10px; /* 水平滚动条高度 */
+  width: 10px; /* Vertical scrollbar width */
+  height: 10px; /* Horizontal scrollbar height */
 
   &-track {
-    background: #f1f1f1; /* 轨道背景色 */
+    background: #f1f1f1; /* Track background color */
     border-radius: 10px;
   }
 
   &-thumb {
-    background: #9e9e9e; /* 滑块背景色 */
+    background: #9e9e9e; /* Thumb background color */
     border-radius: 10px;
-    border: 2px solid #f1f1f1; /* 滑块内边距效果 */
+    border: 2px solid #f1f1f1; /* Thumb inner padding effect */
 
     &:hover {
       background: #555;

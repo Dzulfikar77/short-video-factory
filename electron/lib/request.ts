@@ -1,63 +1,63 @@
 import { net, ClientRequestConstructorOptions, IncomingMessage } from 'electron'
 
 /**
- * HTTP 请求方法类型
+ * HTTP request method type
  */
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS'
 
 /**
- * 请求配置选项
+ * Request configuration options
  */
 export interface RequestOptions {
-  /** 请求 URL */
+  /** Request URL */
   url: string
-  /** HTTP 方法 */
+  /** HTTP method */
   method?: HttpMethod
-  /** 请求头 */
+  /** Request headers */
   headers?: Record<string, string>
-  /** 请求体数据 */
+  /** Request body data */
   body?: string | Buffer | object
-  /** 超时时间（毫秒） */
+  /** Timeout in milliseconds */
   timeout?: number
-  /** Session 实例 */
+  /** Session instance */
   session?: Electron.Session
-  /** 分区名称 */
+  /** Partition name */
   partition?: string
-  /** 是否使用 session cookies */
+  /** Whether to use session cookies */
   useSessionCookies?: boolean
-  /** 凭据模式 */
+  /** Credentials mode */
   credentials?: 'omit' | 'include' | 'same-origin'
-  /** 跟随重定向 */
+  /** Redirect behavior */
   redirect?: 'follow' | 'error' | 'manual'
 }
 
 /**
- * 响应对象
+ * Response object
  */
 export interface Response {
-  /** HTTP 状态码 */
+  /** HTTP status code */
   status: number
-  /** HTTP 状态消息 */
+  /** HTTP status message */
   statusText: string
-  /** 响应头 */
+  /** Response headers */
   headers: Record<string, string[] | string>
-  /** 响应数据 */
+  /** Response data */
   data: string
-  /** 是否成功响应 (2xx 状态码) */
+  /** Whether response is successful (2xx status code) */
   ok: boolean
-  /** 获取 JSON 格式的响应数据 */
+  /** Get response data as JSON */
   json: <T = any>() => T
-  /** 获取文本格式的响应数据 */
+  /** Get response data as text */
   text: () => string
 }
 
 /**
- * 网络请求错误
+ * Network request error
  */
 export class RequestError extends Error {
-  /** HTTP 状态码 */
+  /** HTTP status code */
   public statusCode?: number
-  /** 响应对象 */
+  /** Response object */
   public response?: Response
 
   constructor(message: string, statusCode?: number, response?: Response) {
@@ -69,9 +69,9 @@ export class RequestError extends Error {
 }
 
 /**
- * 标准化请求选项
- * @param options - 请求选项
- * @returns 标准化的请求选项
+ * Normalize request options
+ * @param options - Request options
+ * @returns Normalized request options
  */
 function normalizeOptions(
   options: string | RequestOptions,
@@ -96,15 +96,15 @@ function normalizeOptions(
 }
 
 /**
- * 发起 HTTP/HTTPS 请求
- * @param options - 请求选项或 URL 字符串
- * @returns Promise<Response> 响应对象
+ * Send HTTP/HTTPS request
+ * @param options - Request options or URL string
+ * @returns Promise<Response> Response object
  * @example
- * // 基本用法
+ * // Basic usage
  * const response = await request('https://api.example.com/data');
  * const data = response.json();
  *
- * // POST 请求
+ * // POST request
  * const response = await request({
  *   url: 'https://api.example.com/users',
  *   method: 'POST',
@@ -112,7 +112,7 @@ function normalizeOptions(
  *   headers: { 'Authorization': 'Bearer token' }
  * });
  *
- * // 带超时的请求
+ * // Request with timeout
  * const response = await request({
  *   url: 'https://api.example.com/data',
  *   timeout: 5000
@@ -125,14 +125,14 @@ async function request(options: string | RequestOptions): Promise<Response> {
     try {
       const req = net.request(config as ClientRequestConstructorOptions)
 
-      // 设置请求头
+      // Set request headers
       if (config.headers) {
         Object.keys(config.headers).forEach((key) => {
           req.setHeader(key, config.headers![key])
         })
       }
 
-      // 超时处理
+      // Timeout handling
       let timeoutId: NodeJS.Timeout | null = null
       if (config.timeout && config.timeout > 0) {
         timeoutId = setTimeout(() => {
@@ -141,9 +141,9 @@ async function request(options: string | RequestOptions): Promise<Response> {
         }, config.timeout)
       }
 
-      // 处理响应
+      // Handle response
       req.on('response', (response: IncomingMessage) => {
-        // 清除超时定时器
+        // Clear timeout timer
         if (timeoutId) {
           clearTimeout(timeoutId)
           timeoutId = null
@@ -189,9 +189,9 @@ async function request(options: string | RequestOptions): Promise<Response> {
         })
       })
 
-      // 错误处理
+      // Error handling
       req.on('error', (error: Error) => {
-        // 清除超时定时器
+        // Clear timeout timer
         if (timeoutId) {
           clearTimeout(timeoutId)
           timeoutId = null
@@ -199,7 +199,7 @@ async function request(options: string | RequestOptions): Promise<Response> {
         reject(new RequestError(`Network error: ${error.message}`))
       })
 
-      // 发送请求体
+      // Send request body
       if (config.body) {
         if (typeof config.body === 'object' && !(config.body instanceof Buffer)) {
           if (!config.headers || !config.headers['Content-Type']) {
@@ -219,10 +219,10 @@ async function request(options: string | RequestOptions): Promise<Response> {
 }
 
 /**
- * 发起 GET 请求
- * @param url - 请求 URL
- * @param options - 额外的请求选项
- * @returns Promise<Response> 响应对象
+ * Send GET request
+ * @param url - Request URL
+ * @param options - Additional request options
+ * @returns Promise<Response> Response object
  * @example
  * const response = await request.get('https://api.example.com/users');
  * const users = response.json();
@@ -239,11 +239,11 @@ request.get = async (
 }
 
 /**
- * 发起 POST 请求
- * @param url - 请求 URL
- * @param body - 请求体数据
- * @param options - 额外的请求选项
- * @returns Promise<Response> 响应对象
+ * Send POST request
+ * @param url - Request URL
+ * @param body - Request body data
+ * @param options - Additional request options
+ * @returns Promise<Response> Response object
  * @example
  * const response = await request.post('https://api.example.com/users', {
  *   name: 'John',
@@ -265,11 +265,11 @@ request.post = async (
 }
 
 /**
- * 发起 PUT 请求
- * @param url - 请求 URL
- * @param body - 请求体数据
- * @param options - 额外的请求选项
- * @returns Promise<Response> 响应对象
+ * Send PUT request
+ * @param url - Request URL
+ * @param body - Request body data
+ * @param options - Additional request options
+ * @returns Promise<Response> Response object
  * @example
  * const response = await request.put('https://api.example.com/users/1', {
  *   name: 'John Updated',
@@ -291,10 +291,10 @@ request.put = async (
 }
 
 /**
- * 发起 DELETE 请求
- * @param url - 请求 URL
- * @param options - 额外的请求选项
- * @returns Promise<Response> 响应对象
+ * Send DELETE request
+ * @param url - Request URL
+ * @param options - Additional request options
+ * @returns Promise<Response> Response object
  * @example
  * const response = await request.delete('https://api.example.com/users/1');
  * if (response.ok) {
@@ -313,11 +313,11 @@ request.delete = async (
 }
 
 /**
- * 发起 PATCH 请求
- * @param url - 请求 URL
- * @param body - 请求体数据
- * @param options - 额外的请求选项
- * @returns Promise<Response> 响应对象
+ * Send PATCH request
+ * @param url - Request URL
+ * @param body - Request body data
+ * @param options - Additional request options
+ * @returns Promise<Response> Response object
  * @example
  * const response = await request.patch('https://api.example.com/users/1', {
  *   name: 'John Partially Updated'
@@ -338,10 +338,10 @@ request.patch = async (
 }
 
 /**
- * 发起 HEAD 请求
- * @param url - 请求 URL
- * @param options - 额外的请求选项
- * @returns Promise<Response> 响应对象
+ * Send HEAD request
+ * @param url - Request URL
+ * @param options - Additional request options
+ * @returns Promise<Response> Response object
  * @example
  * const response = await request.head('https://api.example.com/users');
  * console.log('Headers:', response.headers);

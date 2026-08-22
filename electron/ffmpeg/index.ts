@@ -30,14 +30,14 @@ export async function renderVideo(
   },
 ): Promise<ExecuteFFmpegResult> {
   try {
-    // 解构参数
+    // Destructure parameters
     const { videoFiles, timeRanges, outputSize, outputDuration, onProgress, abortSignal } = params
 
-    // 音频默认配置
+    // Audio default configuration
     const audioFiles = params.audioFiles ?? {}
     audioFiles.voice = params.audioFiles?.voice ?? getTempTtsVoiceFilePath()
 
-    // 字幕默认配置
+    // Subtitle default configuration
     const subtitleFile =
       params.subtitleFile ??
       path
@@ -47,58 +47,58 @@ export async function renderVideo(
         )
         .replace(/\\/g, '/')
 
-    // 输出路径默认配置
+    // Output path default configuration
     if (!fs.existsSync(path.dirname(params.outputPath))) {
-      throw new Error(`输出路径不存在`)
+      throw new Error(`Output path does not exist`)
     }
     const outputPath = generateUniqueFileName(params.outputPath)
 
-    // 构建args指令
+    // Build args command
     const args = []
 
-    // 添加所有视频输入
+    // Add all video inputs
     videoFiles.forEach((file) => {
       args.push('-i', `${file}`)
     })
 
-    // 添加音频输入
-    // 语音音轨
+    // Add audio inputs
+    // Voice track
     args.push('-i', `${audioFiles.voice}`)
 
-    // 背景音乐
+    // Background music (BGM)
     audioFiles?.bgm && args.push('-i', `${audioFiles.bgm}`)
 
-    // 构建复杂滤镜
+    // Build complex filter
     const filters = []
     const videoStreams: string[] = []
 
-    // 处理每个视频片段
+    // Process each video clip
     videoFiles.forEach((_, index) => {
       const [start, end] = timeRanges[index]
       const streamLabel = `v${index}`
       videoStreams.push(streamLabel)
 
-      // 使用 trim、setpts、scale、pad 等操作处理视频
+      // Use trim, setpts, scale, pad operations to process video
       filters.push(
         `[${index}:v]trim=start=${start}:end=${end},setpts=PTS-STARTPTS,scale=${outputSize.width}:${outputSize.height}:force_original_aspect_ratio=decrease,pad=${outputSize.width}:${outputSize.height}:(ow-iw)/2:(oh-ih)/2,fps=30,format=yuv420p,setsar=1[${streamLabel}]`,
       )
     })
 
-    // 拼接视频
+    // Concatenate videos
     filters.push(`[${videoStreams.join('][')}]concat=n=${videoFiles.length}:v=1:a=0[vconcat]`)
 
-    // 重置时间基、帧率、色彩空间
+    // Reset time base, frame rate, color space
     filters.push(`[vconcat]fps=30,format=yuv420p,setpts=PTS-STARTPTS[vout]`)
 
-    // 在视频拼接后添加字幕
+    // Add subtitles after video concatenation
     filters.push(`[vout]subtitles=${subtitleFile.replace(/\:/g, '\\\\:')}[with_subs]`)
 
-    // 音频处理：使用响度归一化(loudnorm)确保音量均衡
+    // Audio processing: use loudness normalization (loudnorm) to ensure volume balance
     const voiceStreamIdx = videoFiles.length
     const bgmStreamIdx = audioFiles?.bgm ? videoFiles.length + 1 : null
 
     if (outputDuration) {
-      // 先对音频trim到目标时长，避免loudnorm导致的截断
+      // Trim audio to target duration first, avoiding truncation caused by loudnorm
       const voiceLoudnorm = `loudnorm=I=-16:TP=-1.5:LRA=11`
       filters.push(`[${voiceStreamIdx}:a]${voiceLoudnorm}[voice_norm_raw]`)
       filters.push(
@@ -107,10 +107,10 @@ export async function renderVideo(
 
       if (bgmStreamIdx !== null) {
         const bgmLoudnorm = `loudnorm=I=-25:TP=-1.5:LRA=11`
-        // 对BGM先归一化，然后trim到目标时长
+        // Normalize BGM first, then trim to target duration
         filters.push(`[${bgmStreamIdx}:a]${bgmLoudnorm}[bgm_norm_raw]`)
         filters.push(`[bgm_norm_raw]atrim=0:${outputDuration},asetpts=PTS-STARTPTS[bgm_trimmed]`)
-        // 使用 duration=first 混合（以语音为准），并添加 dropout_transition=0
+        // Use duration=first for mixing (voice as reference), and add dropout_transition=0
         filters.push(
           `[voice_normalized][bgm_trimmed]amix=inputs=2:duration=first:dropout_transition=0[final_audio]`,
         )
@@ -132,13 +132,13 @@ export async function renderVideo(
       }
     }
 
-    // 设置 filter_complex
+    // Set filter_complex
     args.push('-filter_complex', `${filters.join(';')}`)
 
-    // 映射输出流
+    // Map output streams
     args.push('-map', '[with_subs]', '-map', '[final_audio]')
 
-    // 编码参数
+    // Encoding parameters
     args.push(
       '-c:v',
       'libx264',
@@ -163,14 +163,14 @@ export async function renderVideo(
       outputPath,
     )
 
-    // 打印命令
-    // console.log('传入参数:', params)
-    // console.log('执行命令:', args.join(' '))
+    // Print command
+    // console.log('Input params:', params)
+    // console.log('Execute command:', args.join(' '))
 
-    // 执行命令
+    // Execute command
     const result = await executeFFmpeg(args, { onProgress, abortSignal })
 
-    // 移除临时文件
+    // Remove temporary files
     if (fs.existsSync(audioFiles.voice)) {
       fs.unlinkSync(audioFiles.voice)
     }
@@ -178,7 +178,7 @@ export async function renderVideo(
       fs.unlinkSync(subtitleFile)
     }
 
-    // 返回结果
+    // Return result
     return result
   } catch (error) {
     throw error
@@ -210,14 +210,14 @@ export async function executeFFmpeg(
 
     child.stdout.on('data', (data) => {
       stdout += data.toString()
-      // 处理进度信息
+      // Process progress info
       progress = parseProgress(data.toString()) ?? 0
       options?.onProgress?.(progress >= 100 ? 99 : progress)
     })
 
     child.stderr.on('data', (data) => {
       stderr += data.toString()
-      // 实时输出进度信息
+      // Output progress info in real-time
       options?.onProgress?.(progress >= 100 ? 99 : progress)
     })
 
@@ -234,7 +234,7 @@ export async function executeFFmpeg(
       reject(new Error(`Failed to start FFmpeg: ${error.message}`))
     })
 
-    // 提供取消功能
+    // Provide cancellation functionality
     if (options?.abortSignal) {
       options.abortSignal.addEventListener('abort', () => {
         child.kill('SIGTERM')
@@ -250,16 +250,16 @@ function validateExecutables() {
 
   try {
     fs.accessSync(ffmpegPath, fs.constants.X_OK)
-  } catch (error) {
-    // Windows 上可能没有 X_OK 权限标志
-    if (os.platform() !== 'win32') {
+    } catch (error) {
+      // Windows may not have X_OK permission flag
+      if (os.platform() !== 'win32') {
       throw new Error('FFmpeg executables do not have execute permissions')
     }
   }
 }
 
 function parseProgress(stderrLine: string) {
-  // 解析时间信息：frame=  123 fps= 45 q=25.0 size=    1024kB time=00:00:05.00 bitrate=1677.7kbits/s speed=1.5x
+  // Parse time info: frame=  123 fps= 45 q=25.0 size=    1024kB time=00:00:05.00 bitrate=1677.7kbits/s speed=1.5x
   const timeMatch = stderrLine.match(/time=(\d{2}):(\d{2}):(\d{2}\.\d{2})/)
   if (timeMatch) {
     const hours = parseInt(timeMatch[1])

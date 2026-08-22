@@ -66,17 +66,17 @@ export async function edgeTtsSynthesizeToFile(
     fs.writeFileSync(srtPath, srtString)
   }
 
-  // 指定 mimeType 为 audio/mpeg (MP3)，避免自动检测格式失败
+  // Specify mimeType as audio/mpeg (MP3) to avoid auto-detection failure
   let duration = 0
   try {
     const metadata = await parseBuffer(result.getBuffer(), { mimeType: 'audio/mpeg' })
     duration = metadata.format?.duration ?? 0
   } catch (error: any) {
-    throw new Error(`音频元数据解析失败: ${error?.message ?? String(error)}`)
+    throw new Error(`Audio metadata parsing failed: ${error?.message ?? String(error)}`)
   }
 
   if (!Number.isFinite(duration) || duration <= 0) {
-    throw new Error('音频时长无效，请检查TTS配置或网络连接')
+    throw new Error('Audio duration invalid, please check TTS configuration or network connection')
   }
 
   return {

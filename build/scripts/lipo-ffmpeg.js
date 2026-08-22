@@ -1,34 +1,34 @@
 #!/usr/bin/env node
 /**
- * 1. 设置环境变量 FFMPEG_BINARIES_URL
- * 2. 分别 rebuild x64 / arm64 两个架构
- * 3. 用 lipo 合并为通用二进制
+ * 1. Set the FFMPEG_BINARIES_URL environment variable
+ * 2. Rebuild for x64 / arm64 architectures separately
+ * 3. Merge both into a universal binary using lipo
  */
 const { execSync } = require('child_process')
 const path = require('path')
 
-// 1. 环境变量
+// 1. Environment variable
 const FFMPEG_BINARIES_URL = process.env['npm_config_ffmpeg_binaries_url']
 
-// 2. 工具函数：执行命令并带彩色输出
+// 2. Utility: run a command with colored output
 function run(cmd, opts = {}) {
   console.log(`\n→ ${cmd}`)
   try {
     execSync(cmd, { stdio: 'inherit', shell: true, ...opts })
   } catch (e) {
-    console.error(`❌ 命令失败: ${cmd}`)
+    console.error(`❌ Command failed: ${cmd}`)
     process.exit(1)
   }
 }
 
-// 3. 开始干活
+// 3. Get to work
 const archs = ['x64', 'arm64']
 const ffmpegStaticDir = path.join(__dirname, '..', '..', 'node_modules', 'ffmpeg-static')
 
-// 移除原来的二进制文件
+// Remove the existing binary
 run('rm -f ffmpeg', { cwd: ffmpegStaticDir })
 
-// 获取两种架构的二进制文件
+// Fetch binaries for both architectures
 archs.forEach((arch) => {
   run(
     `pnpm cross-env FFMPEG_BINARIES_URL=${FFMPEG_BINARIES_URL} npm_config_arch=${arch} npm run install`,
@@ -39,10 +39,10 @@ archs.forEach((arch) => {
   run(`mv ${ffmpegStaticDir}/ffmpeg ${ffmpegStaticDir}/ffmpeg-${arch}`)
 })
 
-// 合并
+// Merge
 run('lipo -create ffmpeg-arm64 ffmpeg-x64 -output ffmpeg', { cwd: ffmpegStaticDir })
 
-// 赋权
+// Make executable
 run('chmod 0755 ffmpeg', { cwd: ffmpegStaticDir })
 
-console.log('\n✅ 通用 ffmpeg 已生成:', path.join(ffmpegStaticDir, 'ffmpeg'))
+console.log('\n✅ Universal ffmpeg generated:', path.join(ffmpegStaticDir, 'ffmpeg'))

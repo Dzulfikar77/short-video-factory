@@ -158,7 +158,7 @@ onBeforeUnmount(() => {
   clearTitleBarDragListeners()
 })
 
-// 渲染合成视频
+// Render composite video
 const TextGenerateInstance = ref<InstanceType<typeof TextGenerate> | null>()
 const VideoManageInstance = ref<InstanceType<typeof VideoManage> | null>()
 const TtsControlInstance = ref<InstanceType<typeof TtsControl> | null>()
@@ -184,17 +184,17 @@ const handleRenderVideo = async () => {
           folderPath: appStore.renderConfig.bgmPath.replace(/\\/g, '/'),
         })
       ).filter((asset) => asset.name.toLowerCase().endsWith('.mp3'))
-      console.log('获取到的背景音乐列表', bgmList)
+      console.log('Fetched background music list:', bgmList)
       if (bgmList.length > 0) {
         randomBgm = random.choice(bgmList)
-        console.log('随机选取的背景音乐', randomBgm)
+        console.log('Randomly selected background music:', randomBgm)
       }
     } catch (error: any) {
-      console.log('获取背景音乐列表失败', error)
+      console.log('Failed to fetch background music list:', error)
       const errorMessage = error?.error?.message || error?.message || error
       toast.error({
         component: {
-          // 使用vnode方式创建自定义错误弹窗实例，以获得良好的类型提示
+          // Create a custom error toast instance via vnode for proper type hints
           render: () =>
             h(ActionToastEmbed, {
               message: t('features.render.errors.bgmListFailed'),
@@ -217,15 +217,15 @@ const handleRenderVideo = async () => {
   }
 
   try {
-    trackStat('开始渲染视频')
+    trackStat('Start rendering video')
 
-    // 获取文案
+    // Get the script
     appStore.updateRenderStatus(RenderStatus.GenerateText)
     const text =
       TextGenerateInstance.value?.getCurrentOutputText() ||
       (await TextGenerateInstance.value?.handleGenerate())!
 
-    // TTS合成语音
+    // Synthesize speech with TTS
     // @ts-ignore
     if (appStore.renderStatus !== RenderStatus.GenerateText) {
       return
@@ -242,7 +242,7 @@ const handleRenderVideo = async () => {
       throw new Error(t('features.tts.errors.zeroDuration'))
     }
 
-    // 获取视频片段
+    // Get video segments
     // @ts-ignore
     if (appStore.renderStatus !== RenderStatus.SynthesizedSpeech) {
       return
@@ -253,7 +253,7 @@ const handleRenderVideo = async () => {
     })!
     await new Promise((resolve) => setTimeout(resolve, random.integer(1000, 3000)))
 
-    // 合成视频
+    // Composite video
     // @ts-ignore
     if (appStore.renderStatus !== RenderStatus.SegmentVideo) {
       return
@@ -277,7 +277,7 @@ const handleRenderVideo = async () => {
     })
 
     toast.success(t('features.render.success.succeeded'))
-    trackStat('视频渲染成功')
+    trackStat('Video rendered successfully')
     appStore.updateRenderStatus(RenderStatus.Completed)
 
     if (appStore.autoBatch) {
@@ -286,13 +286,13 @@ const handleRenderVideo = async () => {
       handleRenderVideo()
     }
   } catch (error: any) {
-    console.error('视频合成失败:', error)
-    trackStat('视频渲染失败')
+    console.error('Video composition failed:', error)
+    trackStat('Video render failed')
     if (appStore.renderStatus === RenderStatus.None) return
     const errorMessage = error?.error?.message || error?.message || error
     toast.error({
       component: {
-        // 使用vnode方式创建自定义错误弹窗实例，以获得良好的类型提示
+        // Create a custom error toast instance via vnode for proper type hints
         render: () =>
           h(ActionToastEmbed, {
             message: t('features.render.errors.failed'),
@@ -311,9 +311,9 @@ const handleRenderVideo = async () => {
   }
 }
 const handleCancelRender = () => {
-  console.log('视频合成终止')
+  console.log('Video rendering terminated')
   if (appStore.renderStatus !== RenderStatus.None) {
-    trackStat('视频渲染取消')
+    trackStat('Video rendering cancelled')
   }
   switch (appStore.renderStatus) {
     case RenderStatus.GenerateText:

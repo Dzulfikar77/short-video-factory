@@ -43,16 +43,16 @@ app.use(Toast, {
 app.use(router)
 app.use(store)
 
-// 初始化并应用国际化
+// Initialize and apply internationalization
 i18nInitialized().then(() => {
   app.use(I18NextVue, { i18next })
   app.mount('#app').$nextTick(() => {
-    // 测试消息
+    // Test message
     window.ipcRenderer.on('main-process-message', (_event, message) => {
       console.log(message)
     })
 
-    // 监听主进程切换语言
+    // Listen for language changes from main process
     window.ipcRenderer.on('i18n-changeLanguage', (_event, lng) => {
       i18next.changeLanguage(lng)
       useAppStore().updateLocale(lng)
