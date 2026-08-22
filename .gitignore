@@ -24,3 +24,7 @@ release
 *.njsproj
 *.sln
 *.sw?
+
+# AI agent tooling state
+.omc/
+.omo/
